@@ -1,40 +1,41 @@
-// Here is our constructor function, available globally (set to the window object!)
+// Aquí esta nuestra función constructora, disponible globalmente
+// (seteada al objeto window!)
 window.EventEmitter = function () {
     this.subscribers = {};
 };
 
 (function (EE) {
 
-    // To be used like:
+    // Para ser usada como:
     // instanceOfEE.on('touchdown', cheerFn);
     EE.prototype.on = function (eventName, eventListener) {
 
-        // If this instance's subscribers object does not yet
-        // have the key matching the given event name, create the
-        // key and assign the value of an empty array.
+        // Si el objeto subscribers de la instancia no tiene todavía
+        // la key que matche el nombre del evento dado, creá el
+        // key y asignale el valor de un arreglo vacio
         if (!this.subscribers[eventName]) {
             this.subscribers[eventName] = [];
         }
 
-        // Push the given listener function into the array
-        // located on the instance's subscribers object.
+        // Pusheá la función listener dada al arreglo
+        // localizado en el objeto subscribers de la instancia
         this.subscribers[eventName].push(eventListener);
 
     };
 
-    // To be used like:
+    // Para ser usado como:
     // instanceOfEE.emit('codec', 'Hey Snake, Otacon is calling!');
     EE.prototype.emit = function (eventName) {
 
-        // If there are no subscribers to this event name, why even?
+        // Si no hay subscribers al nombre de este evento, para que molestarse
         if (!this.subscribers[eventName]) {
             return;
         }
 
-        // Grab the remaining arguments to our emit function.
+        // Toma los argumentos restantes de nuestra función emit
         var remainingArgs = [].slice.call(arguments, 1);
 
-        // For each subscriber, call it with our arguments.
+        // Para cada suscriptor, llamalo con nuestros argumentos
         this.subscribers[eventName].forEach(function (listener) {
             listener.apply(null, remainingArgs);
         });
