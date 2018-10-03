@@ -9,17 +9,16 @@ var server = app.listen(1337, function () {
     console.log('The server is listening on port 1337!');
 });
 var io = socketio(server);
-console.log(io.sockets)
+// console.log(io.sockets)
 
 io.on('connection', function (socket) {
     console.log(socket.id);
     socket.on('disconnect', function() {
-        console.log('chupala')
+        console.log('Desconectado')
     });
      
     socket.on('dibujo', function (start,end,strokeColor) {
-        console.log(start, end, strokeColor)
-
+        socket.broadcast.emit('donatello', start, end, strokeColor)
     })
     
 });

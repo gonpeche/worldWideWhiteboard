@@ -9,7 +9,10 @@ socket.on('connect', function () {
 // })
 
  whiteboard.on('draw', function (start, end, strokeColor) {
-     socket.emit('dibujo', start, end, strokeColor)
+    socket.emit('dibujo', start, end, strokeColor)
  })
 
+socket.on('donatello', function (start,end,strokeColor) {
+    whiteboard.draw(start,end,strokeColor)
+})
 
