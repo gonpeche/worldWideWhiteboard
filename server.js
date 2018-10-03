@@ -9,11 +9,22 @@ var server = app.listen(1337, function () {
     console.log('The server is listening on port 1337!');
 });
 var io = socketio(server);
+console.log(io.sockets)
 
 io.on('connection', function (socket) {
-    console.log('Un nuevo cliente se ha conectado!');
     console.log(socket.id);
+    socket.on('disconnect', function() {
+        console.log('chupala')
+    });
+     
+    socket.on('dibujo', function (start,end,strokeColor) {
+        console.log(start, end, strokeColor)
+
+    })
+    
 });
+
+
 
 app.use(express.static(path.join(__dirname, 'browser')));
 
