@@ -11,16 +11,28 @@ var server = app.listen(1337, function () {
 var io = socketio(server);
 // console.log(io.sockets)
 
+var dibujo = {
+    start: [],
+    end: [],
+    strokeColor: []
+}
+
 io.on('connection', function (socket) {
-    console.log(socket.id);
+    socket.emit('tomadata',dibujo)
+    // console.log(socket.id);
     socket.on('disconnect', function() {
         console.log('Desconectado')
     });
      
     socket.on('dibujo', function (start,end,strokeColor) {
+        dibujo.start.push(start)
+        dibujo.end.push(end)
+        dibujo.strokeColor.push(strokeColor)
+        
         socket.broadcast.emit('donatello', start, end, strokeColor)
     })
     
+    // console.log(dibujo)
 });
 
 
@@ -30,3 +42,5 @@ app.use(express.static(path.join(__dirname, 'browser')));
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
+
+module.exports = dibujo
